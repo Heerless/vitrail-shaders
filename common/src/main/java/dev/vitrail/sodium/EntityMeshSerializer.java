@@ -98,6 +98,9 @@ public final class EntityMeshSerializer implements VertexSerializer {
 	public static void register() {
 		VertexSerializerRegistry.instance().registerSerializer(DefaultVertexFormat.ENTITY,
 				EntityMesh.format(), new EntityMeshSerializer());
+		// a block entity's cuboids into a buffer opened for a block pipeline: see MovingBlockSerializer
+		VertexSerializerRegistry.instance().registerSerializer(DefaultVertexFormat.ENTITY,
+				MovingBlockSerializer.carriedFormat(), MovingBlockSerializer.create());
 	}
 
 	/**
