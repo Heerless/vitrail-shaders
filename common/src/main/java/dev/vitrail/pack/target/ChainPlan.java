@@ -133,6 +133,7 @@ public final class ChainPlan {
 					// The entity halves are the two the file has to ask for, and they are drawn in
 					// every place once it has: what decides them is the line and not the format.
 					new NamedProgram("gbuffers_entities", false, Families::entities),
+					new NamedProgram("gbuffers_entities_enchant", false, Families::entities),
 					new NamedProgram("gbuffers_block", false, Families::entities),
 					// The blending half of those same two, on the far side of the stage: the game
 					// draws them among its translucent features, which is after the deferreds have
@@ -156,6 +157,7 @@ public final class ChainPlan {
 					// family's answer, and FeatureLayer names it beside the other two roads in.
 					new NamedProgram("gbuffers_entities_translucent", true,
 							Families::entities),
+					new NamedProgram("gbuffers_entities_translucent_enchant", true, Families::entities),
 					new NamedProgram("gbuffers_block_translucent", true, Families::entities),
 					// The block name on the far side, which is a translucent moving block: Iris keys
 					// TRANSLUCENT_BLOCK to ProgramId.Block (pipeline/IrisPipelines.java:30), and the
@@ -221,6 +223,7 @@ public final class ChainPlan {
 					// single walk would put one key in and leave the other side of the same file
 					// unanswered, which is the silence the head of this list is about.
 					new NamedProgram("gbuffers_hand", false, NOT_EVERYWHERE),
+					new NamedProgram("gbuffers_hand_enchant", false, NOT_EVERYWHERE),
 					new NamedProgram("gbuffers_hand_water", true, NOT_EVERYWHERE),
 					// An enchantment's glint, which straddles the stage for a reason of its own: what
 					// CARRIES it decides which half the game executes it in. An enchanted book is
