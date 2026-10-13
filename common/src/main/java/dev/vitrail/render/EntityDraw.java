@@ -893,14 +893,6 @@ public final class EntityDraw extends FamilyDraw {
 		put(new Element(RenderPipelines.ARMOR_DECAL_CUTOUT_NO_CULL, "armor_decal", ENTITIES, CUTOUT));
 		put(new Element(RenderPipelines.END_CRYSTAL_BEAM, "crystal_beam", ENTITIES, CUTOUT));
 		put(new Element(RenderPipelines.ITEM_CUTOUT, "item", ENTITIES, CUTOUT));
-		// 26.3 draws an enchanted item, solid entity or armour piece in ONE draw, the glint folded into the
-		// item shader (Sampler0 and GlintSampler on one pipeline). Unlisted, those draws fell to the game's
-		// own shader and their finished colours were graded a second time. Served as their plain twins
-		// until a pack's program can be handed the glint too; the _SPECIAL two carry a glint coordinate
-		// of their own and stay unlisted.
-		put(new Element(RenderPipelines.ITEM_CUTOUT_GLINT, "item_glint", ENTITIES, CUTOUT));
-		put(new Element(RenderPipelines.ENTITY_SOLID_GLINT, "solid_glint", ENTITIES, AlphaTest.OFF));
-		put(new Element(RenderPipelines.ARMOR_CUTOUT_NO_CULL_GLINT, "armor_glinted", ENTITIES, CUTOUT));
 
 		// The blending run. All of them but the swirl reach Iris through getTranslucent, which is one
 		// function and not seven rows: pipeline/IrisPipelines.java:35,36,38,39,55,56,83. The swirl is
@@ -915,8 +907,6 @@ public final class EntityDraw extends FamilyDraw {
 				CUTOUT));
 		put(new Element(RenderPipelines.ITEM_TRANSLUCENT, "item_translucent", ENTITIES_TRANSLUCENT,
 				CUTOUT));
-		put(new Element(RenderPipelines.ITEM_TRANSLUCENT_GLINT, "item_translucent_glint",
-				ENTITIES_TRANSLUCENT, CUTOUT));
 		put(new Element(RenderPipelines.BANNER_PATTERN, "banner", ENTITIES_TRANSLUCENT, CUTOUT));
 		// The dark oval a mob is given on the ground, the game's own entity_shadow render type. Named
 		// for what it is rather than after that type: this class already draws into a shadow map, and
