@@ -60,6 +60,7 @@
 		"access.RenderSectionManagerAccessor",
 		"access.RenderTargetAccessor",
 		"RenderTypeFeatureRendererGroupMixin",
+		"RenderTypeGlintMixin",
 		"RenderTypeFeatureRendererMixin",
 		"sodium.MixinShaderChunkRenderer",
 		"access.MixinSodiumWorldRenderer",
