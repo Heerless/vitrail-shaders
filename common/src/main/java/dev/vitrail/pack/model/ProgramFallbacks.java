@@ -85,10 +85,6 @@ public final class ProgramFallbacks {
 		parents.put("gbuffers_weather", "gbuffers_textured_lit");
 		parents.put("gbuffers_water", "gbuffers_terrain");
 		parents.put("gbuffers_hand_water", "gbuffers_hand");
-		// the enchanted draws: the pack's item program with ENCHANT_GLINT, falling back on the plain one
-		parents.put("gbuffers_entities_enchant", "gbuffers_entities");
-		parents.put("gbuffers_entities_translucent_enchant", "gbuffers_entities_translucent");
-		parents.put("gbuffers_hand_enchant", "gbuffers_hand");
 
 		// Distant Horizons. Its shadow program stands alone rather than joining the shadow
 		// family above.
