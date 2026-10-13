@@ -655,6 +655,10 @@ public final class EntityDraw extends FamilyDraw {
 	 * entity program and no translucent one draws its whole family with the file it wrote.
 	 */
 	private static final String ENTITIES_TRANSLUCENT = "gbuffers_entities_translucent";
+	/** The enchanted draws: the item program with the glint folded in (ENCHANT_GLINT in the pack's lit.glsl). */
+	private static final String ENTITIES_ENCHANT = "gbuffers_entities_enchant";
+	private static final String ENTITIES_TRANSLUCENT_ENCHANT = "gbuffers_entities_translucent_enchant";
+	private static final String HAND_ENCHANT = "gbuffers_hand_enchant";
 
 	private static final String BLOCK_TRANSLUCENT = "gbuffers_block_translucent";
 
@@ -898,9 +902,9 @@ public final class EntityDraw extends FamilyDraw {
 		// own shader and their finished colours were graded a second time. Served as their plain twins
 		// until a pack's program can be handed the glint too; the _SPECIAL two carry a glint coordinate
 		// of their own and stay unlisted.
-		put(new Element(RenderPipelines.ITEM_CUTOUT_GLINT, "item_glint", ENTITIES, CUTOUT));
-		put(new Element(RenderPipelines.ENTITY_SOLID_GLINT, "solid_glint", ENTITIES, AlphaTest.OFF));
-		put(new Element(RenderPipelines.ARMOR_CUTOUT_NO_CULL_GLINT, "armor_glinted", ENTITIES, CUTOUT));
+		put(new Element(RenderPipelines.ITEM_CUTOUT_GLINT, "item_glint", ENTITIES_ENCHANT, CUTOUT));
+		put(new Element(RenderPipelines.ENTITY_SOLID_GLINT, "solid_glint", ENTITIES_ENCHANT, AlphaTest.OFF));
+		put(new Element(RenderPipelines.ARMOR_CUTOUT_NO_CULL_GLINT, "armor_glinted", ENTITIES_ENCHANT, CUTOUT));
 
 		// The blending run. All of them but the swirl reach Iris through getTranslucent, which is one
 		// function and not seven rows: pipeline/IrisPipelines.java:35,36,38,39,55,56,83. The swirl is
@@ -916,7 +920,7 @@ public final class EntityDraw extends FamilyDraw {
 		put(new Element(RenderPipelines.ITEM_TRANSLUCENT, "item_translucent", ENTITIES_TRANSLUCENT,
 				CUTOUT));
 		put(new Element(RenderPipelines.ITEM_TRANSLUCENT_GLINT, "item_translucent_glint",
-				ENTITIES_TRANSLUCENT, CUTOUT));
+				ENTITIES_TRANSLUCENT_ENCHANT, CUTOUT));
 		put(new Element(RenderPipelines.BANNER_PATTERN, "banner", ENTITIES_TRANSLUCENT, CUTOUT));
 		// The dark oval a mob is given on the ground, the game's own entity_shadow render type. Named
 		// for what it is rather than after that type: this class already draws into a shadow map, and
@@ -1128,7 +1132,7 @@ public final class EntityDraw extends FamilyDraw {
 	private static void twins(Map<RenderPipeline, Element> into, String prefix, String program,
 			RenderStage stage, boolean afterDeferred) {
 		ELEMENTS.values().stream()
-				.map(mob -> new Element(mob.pipeline(), prefix + mob.element(), program,
+				.map(mob -> new Element(mob.pipeline(), prefix + mob.element(), mob.program().equals(ENTITIES_ENCHANT) || mob.program().equals(ENTITIES_TRANSLUCENT_ENCHANT) ? HAND_ENCHANT : program,
 						mob.text() ? AlphaTest.NON_ZERO : CUTOUT, stage, afterDeferred))
 				.forEach(element -> into.put(element.pipeline(), element));
 	}
