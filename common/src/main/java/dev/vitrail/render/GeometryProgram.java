@@ -424,6 +424,10 @@ final class GeometryProgram {
 	 */
 	private final Sampled[] bound;
 
+	/** The name the enchanted programs read the glint through, and the glint image of the draw being prepared. */
+	private static final String GLINT = "GlintSampler";
+	private GpuTextureView glintView;
+	private GpuSampler glintSampler;
 	/**
 	 * The two halves of {@link #bound}, split once: the names whose answer follows the draw's own
 	 * image, bound at every draw, and every other name, bound once per pass open. A bind used to
@@ -707,9 +711,9 @@ final class GeometryProgram {
 									: null);
 				})
 				.toArray(Sampled[]::new);
-		this.following = Arrays.stream(this.bound).filter(Sampled::followsTheImage)
+		this.following = Arrays.stream(this.bound).filter(one -> one.followsTheImage() || GLINT.equals(one.name))
 				.toArray(Sampled[]::new);
-		this.settledOnce = Arrays.stream(this.bound).filter(one -> !one.followsTheImage())
+		this.settledOnce = Arrays.stream(this.bound).filter(one -> !one.followsTheImage() && !GLINT.equals(one.name))
 				.toArray(Sampled[]::new);
 		this.readWhileWritten = readWhileWritten(targets);
 
@@ -1449,6 +1453,9 @@ final class GeometryProgram {
 	 * it, falling back on what the pass settled where it brought none.
 	 */
 	private GpuTextureView imageView(Sampled one) {
+		if (GLINT.equals(one.name)) {
+			return this.glintView != null ? this.glintView : one.view;
+		}
 		if (one.material != null) {
 			// The map that follows THIS pass's own image, which is how the block atlas, the particle
 			// atlas and every entity texture answer for themselves without this step knowing which of
@@ -1496,6 +1503,9 @@ final class GeometryProgram {
 	 * the specular map under labPBR, and {@link #passSampler} says what that costs.
 	 */
 	private GpuSampler imageSampler(Sampled one) {
+		if (GLINT.equals(one.name)) {
+			return this.glintSampler != null ? this.glintSampler : one.state;
+		}
 		if (this.atlasSampler == null) {
 			return one.state;
 		}
@@ -1601,6 +1611,12 @@ final class GeometryProgram {
 	 */
 	void atlas(GpuTextureView view) {
 		this.atlas = view;
+	}
+
+	/** The glint image of the draw being prepared, for a program that reads GlintSampler; null for every other draw. */
+	void glint(GpuTextureView view, GpuSampler sampler) {
+		this.glintView = view;
+		this.glintSampler = sampler;
 	}
 
 	/** Whether the pipeline a pass has bound is this program's. */

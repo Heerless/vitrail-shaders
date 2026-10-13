@@ -326,6 +326,11 @@ final class EntityProgram extends FamilyProgram {
 		this.body.sampler(sampler);
 	}
 
+	/** The glint image for the enchanted programs' GlintSampler, or null when the draw has none. */
+	void glint(GpuTextureView view, GpuSampler sampler) {
+		this.body.glint(view, sampler);
+	}
+
 	/**
 	 * Whether the pass to open is the plain one, with none of the pack's own targets named.
 	 *

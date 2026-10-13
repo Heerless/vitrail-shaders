@@ -2022,6 +2022,8 @@ public final class EntityDraw extends FamilyDraw {
 				: element.intensity() ? GlyphIntensity.view(texture.textureView())
 						: texture.textureView(),
 				texture == null ? null : texture.sampler());
+		PreparedRenderType.Texture glint = named(prepared, GLINT_SAMPLER);
+		program.glint(glint == null ? null : glint.textureView(), glint == null ? null : glint.sampler());
 
 		GraphicsApi.setPipeline(this.open, this.bound);
 		scissor(prepared.scissorState());
@@ -2275,6 +2277,19 @@ public final class EntityDraw extends FamilyDraw {
 		} else {
 			this.open.disableScissor();
 		}
+	}
+
+	/** The texture a render type brings under one name, or null. The enchanted glint is read through GlintSampler. */
+	private static final String GLINT_SAMPLER = "GlintSampler";
+
+	private static PreparedRenderType.Texture named(PreparedRenderType prepared, String name) {
+		for (PreparedRenderType.Texture texture : prepared.textures()) {
+			if (name.equals(texture.name())) {
+				return texture;
+			}
+		}
+
+		return null;
 	}
 
 	/** The image the game was going to draw this piece with, or null where it binds none. */
